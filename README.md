@@ -1,5 +1,7 @@
 # rideshare-simulation
 
+Runs on Python >=2.7.10, any lower and no guarantees it will function
+
 ## Setup
 
 	wget from http://dev.mysql.com/downloads/file/?id=462583
