@@ -84,14 +84,14 @@ class Point(object):
         on the earth (specified in decimal degrees)
         """
         # convert decimal degrees to radians 
-        self.y, self.x, other.y, other.x = map(radians, [self.y, self.x, other.y, other.x])
+        lon1, lat1, lon2, lat2 = map(radians, [self.y, self.x, other.y, other.x])
 
         # haversine formula 
-        dlon = other.y - self.y 
-        dlat = other.x - self.x 
-        a = sin(dlat/2)**2 + cos(self.x) * cos(other.x) * sin(dlon/2)**2
+        dlon = lon2 - lon1 
+        dlat = lat2 - lat1 
+        a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
         c = 2 * asin(sqrt(a)) 
-        r = 3956 # Radius of earth in kilometers. Use 3956 for miles
+        r = 6371 # Radius of earth in kilometers. Use 3956 for miles
         return c * r
         
     # class Point ends here

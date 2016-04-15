@@ -1,6 +1,9 @@
 from rand import get_rand
 from data import get_data
 from Point import Point
+from dist import *
 
-# print get_rand(5,5)
-# print get_data()
+[a]=get_rand(1,5)
+precomp=prepare(a)
+print dist(precomp,[3,1,0])
+print precomp
