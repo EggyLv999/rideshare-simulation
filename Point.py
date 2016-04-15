@@ -1,5 +1,8 @@
 #shamelessly looted from http://www1.cmc.edu/pages/faculty/alee/python/points.py
 import math
+from math import radians, cos, sin, asin, sqrt
+
+
 
 #*********************************************************
 # class Point starts here
@@ -74,6 +77,22 @@ class Point(object):
 
     def isIn1stQuad(self):
         return (self.x > 0) and (self.y > 0)
+
+    def haversine(self, other):
+        """
+        Calculate the great circle distance between two points 
+        on the earth (specified in decimal degrees)
+        """
+        # convert decimal degrees to radians 
+        self.y, self.x, other.y, other.x = map(radians, [self.y, self.x, other.y, other.x])
+
+        # haversine formula 
+        dlon = other.y - self.y 
+        dlat = other.x - self.x 
+        a = sin(dlat/2)**2 + cos(self.x) * cos(other.x) * sin(dlon/2)**2
+        c = 2 * asin(sqrt(a)) 
+        r = 3956 # Radius of earth in kilometers. Use 3956 for miles
+        return c * r
         
     # class Point ends here
     #*********************************************************
