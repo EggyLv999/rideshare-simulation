@@ -6,9 +6,6 @@ import copy
 from numpy import array
 from scipy.cluster.vq import kmeans2
 
-[a]=get_rand(1,9,'abcde')
-precomp=prepare(a)
-
 def part_cost(part,precomp):
 	return sum(map(lambda ind: dist(precomp,ind),part))
 
@@ -37,12 +34,12 @@ def best(coords,maxsize,precomp):
 
 	return reduce(min,map(lambda part:part_cost(part,precomp),get_parts(num_points)))
 
-def km(coords,maxsize,precomp,tries=10):
+def km(coords,maxsize,precomp,tries=100):
 	(origin,agent_coords)=coords
 	num_points=len(coords[1])
 	maxnum=(num_points+maxsize-1)/maxsize
 	agent_coords=array(map(lambda p:p.list(),agent_coords))
-	best=4294967295
+	best=float('inf')
 
 	for i in xrange(tries):
 		(centers,labels)=kmeans2(agent_coords,maxnum,minit='points',check_finite=False)
@@ -60,8 +57,12 @@ def km(coords,maxsize,precomp,tries=10):
 			best=min(best,part_cost(part,precomp))
 	return best
 
-print(best(a,3,precomp))
-print(km(a,3,precomp))
+
+instlist=get_rand(20,9,'abcde')
+for inst in instlist:
+	precomp=prepare(inst)
+	print(best(inst,3,precomp))
+	print(km(inst,3,precomp))
 
 
 
