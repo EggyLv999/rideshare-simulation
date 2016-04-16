@@ -65,6 +65,8 @@ class Point(object):
         # y values are the same too. . . it's a tie
         return 0
 
+    def list(self):
+        return [self.x,self.y]
 
     # Other general methods
     def distance_from_origin(elf):
