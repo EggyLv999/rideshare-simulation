@@ -9,6 +9,8 @@ from scipy.cluster.vq import kmeans2
 def part_cost(part,precomp):
 	return sum(map(lambda ind: dist(precomp,ind),part))
 
+#currently only makes partitions of size 4,4,3 with params 11,4
+#ie it doesn't do enough splitting yet
 def best(coords,maxsize,precomp):
 	num_points=len(coords[1])
 	maxnum=(num_points+maxsize-1)/maxsize
@@ -21,11 +23,11 @@ def best(coords,maxsize,precomp):
 			for part in parts:
 				parts2=[]
 				for i in xrange(len(part)):
-					if(len(part[i])<maxnum):
+					if(len(part[i])<maxsize):
 						part2=copy.deepcopy(part)
 						part2[i].append(n-1)
 						parts2.append(part2)
-				if(len(part)<maxsize):
+				if(len(part)<maxnum):
 					part2=copy.deepcopy(part)
 					part2.append([n-1])
 					parts2.append(part2)
@@ -34,35 +36,41 @@ def best(coords,maxsize,precomp):
 
 	return reduce(min,map(lambda part:part_cost(part,precomp),get_parts(num_points)))
 
-def km(coords,maxsize,precomp,tries=100):
-	(origin,agent_coords)=coords
+def km(coords,maxsize,precomp,tries=10):
+	(origin,agent_pts)=coords
 	num_points=len(coords[1])
 	maxnum=(num_points+maxsize-1)/maxsize
-	agent_coords=array(map(lambda p:p.list(),agent_coords))
+	agent_coords=array(map(lambda p:p.list(),agent_pts))
 	best=float('inf')
 
 	for i in xrange(tries):
-		(centers,labels)=kmeans2(agent_coords,maxnum,minit='points',check_finite=False)
+		(centers,labels)=kmeans2(agent_coords,maxnum,check_finite=False)
+		centers=map(lambda (x,y):Point(x,y),centers)
+		updates=[]
+		for ctr in xrange(maxnum):
+			for pt in xrange(num_points):
+				updates.append((centers[ctr].haversine(agent_pts[pt]),ctr,pt))
+		updates.sort(key=lambda (a,b,c):a)
+
+		used=[False for i in xrange(num_points)]
 		part=[[] for i in xrange(maxnum)]
-		for i in xrange(num_points):
-			part[labels[i]].append(i)
-		valid=True
 
-		#checks if an clustering is valid
-		for se in part:
-			if(len(se)>maxnum):
-				valid=False
+		for update in updates:
+			(dist,ctr,pt)=update
+			if (not used[pt]) and len(part[ctr])<maxsize:
+				part[ctr].append(pt)
+				used[pt]=True
 
-		if(valid):
-			best=min(best,part_cost(part,precomp))
+		best=min(best,part_cost(part,precomp))
 	return best
 
 
-instlist=get_rand(20,9,'abcde')
+
+instlist=get_rand(20,12,'abcde')
 for inst in instlist:
 	precomp=prepare(inst)
-	print(best(inst,3,precomp))
-	print(km(inst,3,precomp))
+	print(best(inst,4,precomp))
+	print(km(inst,4,precomp))
 
 
 
