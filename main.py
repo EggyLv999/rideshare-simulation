@@ -36,7 +36,7 @@ def best(coords,maxsize,precomp):
 
 	return reduce(min,map(lambda part:part_cost(part,precomp),get_parts(num_points)))
 
-def km(coords,maxsize,precomp,tries=10):
+def km(coords,maxsize,precomp,tries=100):
 	(origin,agent_pts)=coords
 	num_points=len(coords[1])
 	maxnum=(num_points+maxsize-1)/maxsize
@@ -64,13 +64,12 @@ def km(coords,maxsize,precomp,tries=10):
 		best=min(best,part_cost(part,precomp))
 	return best
 
+fout=open('results.csv','w')
 
-
-instlist=get_rand(20,12,'abcde')
+instlist=get_rand(100,12,'abcde')
 for inst in instlist:
 	precomp=prepare(inst)
-	print(best(inst,4,precomp))
-	print(km(inst,4,precomp))
-
+	fout.write("%f,%f\n" % (best(inst,4,precomp),km(inst,4,precomp)))
+fout.close()
 
 

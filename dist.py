@@ -3,6 +3,12 @@ import math
 
 def prepare(arg):
 	(origin,destlist)=arg
+	a=[origin.distance(dest) for dest in destlist]
+	b=[[desta.distance(destb) for destb in destlist]for desta in destlist]
+	return (a,b)
+
+def prepare_haversine(arg):
+	(origin,destlist)=arg
 	a=[origin.haversine(dest) for dest in destlist]
 	b=[[desta.haversine(destb) for destb in destlist]for desta in destlist]
 	return (a,b)
