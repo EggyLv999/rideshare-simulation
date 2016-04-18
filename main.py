@@ -7,7 +7,7 @@ import sys
 # fout=open('results.csv','w')
 fout=sys.stdout
 
-instlist=get_rand(100,12,'42')
+instlist=get_rand(100,12,'seed')
 for inst in instlist:
 	precomp=prepare(inst)
 	# fout.write("%f\n" % sum(precomp[0]))
