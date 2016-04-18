@@ -4,8 +4,8 @@ from algos import *
 from stable import *
 import sys
 
-# fout=open('results.csv','w')
-fout=sys.stdout
+fout=open('results.csv','w')
+# fout=sys.stdout
 
 instlist=get_rand(100,12,'seed')
 for inst in instlist:

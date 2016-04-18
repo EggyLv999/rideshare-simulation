@@ -33,7 +33,7 @@ def get_data():
 
 	def process(coordstr):
 		coordsplit=coordstr.split("::")
-		return Point(coordsplit[1],coordsplit[2])
+		return Point(float(coordsplit[1]),float(coordsplit[2]))
 
 	for inst in instances.itervalues():
 		coordlist=(process(inst[pickup_address]),map(process,inst[agentlist]))
