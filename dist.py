@@ -14,6 +14,8 @@ def prepare_haversine(arg):
 	return (a,b)
 
 def dist(precomp, indices):
+	if(len(indices)==0):
+		return 0
 	(origin,dest)=precomp
 	curr=4294967295
 	for order in permutations(indices):
